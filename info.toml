@@ -1,0 +1,9 @@
+[meta]
+name     = "Lap Counter"
+author   = "Evil_Violator"
+category = "Overlay"
+version  = "1.0.0"
+
+[script]
+dependencies = ["MLHook", "MLFeedRaceData"]
+timeout = 5000
