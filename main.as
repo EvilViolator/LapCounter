@@ -76,7 +76,7 @@
                     UI::PopStyleColor();
                     UI::SameLine();
                 }
-                string lapText = "" + min(CurrentLap, TotalLaps) + " / " + TotalLaps;
+                string lapText = "" + min(CurrentLap, TotalLaps) + "/" + TotalLaps;
                 vec2 textPos = UI::GetCursorPos();
 
                 if (setting_drop_shadow) {
