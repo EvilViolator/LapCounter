@@ -1,6 +1,10 @@
 
 bool g_ShowHUD = true;
 
+int min(int a, int b) {
+       return a < b ? a : b;
+   }
+
 void RenderMenu() {
     if (UI::MenuItem("Lap HUD", "", g_ShowHUD)) {
         g_ShowHUD = !g_ShowHUD;
@@ -14,7 +18,12 @@ void Render() {
 
     UI::SetNextWindowSize(240, 100, UI::Cond::FirstUseEver);
 
-    if (UI::Begin("Lap HUD")) {
+    if (UI::Begin("Lap HUD",
+    UI::WindowFlags::NoTitleBar |
+    UI::WindowFlags::NoResize |
+    UI::WindowFlags::NoCollapse |
+    UI::WindowFlags::NoScrollbar |
+    UI::WindowFlags::NoBackground)) {
         auto raceData = MLFeed::GetRaceData_V4();
 
         if (raceData is null) {
@@ -32,16 +41,11 @@ void Render() {
                 int TotalLaps = int(raceData.LapCount);
                 int CurrentLap = CpsPassed / (CpsPerLap +1 ) + 1;
 
-
-
-                UI::Text("LAP");
-                UI::SameLine();
-                // Current Lap= player.CpCount / (raceData.CpCount + 1 ) + 1
-                UI::Text(
-                    "" + (CurrentLap)
-                    + " / " + raceData.LapCount
-
-                );
+            UI::PushFontSize(50.0f);
+            UI::Text("Lap");
+            UI::SameLine();
+            UI::Text("" + min(CurrentLap,TotalLaps) + " / " + TotalLaps);
+            UI::PopFontSize();
             }
         }
     }
