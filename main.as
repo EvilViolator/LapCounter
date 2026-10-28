@@ -1,29 +1,30 @@
 
-bool g_ShowHUD = true;
-
 int min(int a, int b) {
        return a < b ? a : b;
    }
 
-void RenderMenu() {
-    if (UI::MenuItem("Lap HUD", "", g_ShowHUD)) {
-        g_ShowHUD = !g_ShowHUD;
-    }
-}
-
 void Render() {
-    if (!g_ShowHUD) {
+    if (!setting_enabled) {
         return;
     }
 
     UI::SetNextWindowSize(240, 100, UI::Cond::FirstUseEver);
 
-    if (UI::Begin("Lap HUD",
-    UI::WindowFlags::NoTitleBar |
-    UI::WindowFlags::NoResize |
-    UI::WindowFlags::NoCollapse |
-    UI::WindowFlags::NoScrollbar |
-    UI::WindowFlags::NoBackground)) {
+    UI::WindowFlags flags = UI::WindowFlags(
+        UI::WindowFlags::NoTitleBar |
+        UI::WindowFlags::NoResize |
+        UI::WindowFlags::NoCollapse |
+        UI::WindowFlags::NoScrollbar |
+        UI::WindowFlags::NoBackground
+    );
+
+    if (setting_lock_window_location) {
+        flags = UI::WindowFlags(flags | UI::WindowFlags::NoMove);
+    }
+    if (!UI::IsOverlayShown())
+    		flags = UI::WindowFlags(flags | UI::WindowFlags::NoInputs);
+
+    if (UI::Begin("Lap HUD", flags)) {
         auto raceData = MLFeed::GetRaceData_V4();
 
         if (raceData is null) {
