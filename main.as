@@ -1,19 +1,12 @@
-
-int min(int a, int b) {
-       return a < b ? a : b;
-   }
-
 void Render() {
     auto app = cast<CGameManiaPlanet>(GetApp());
     if (!setting_enabled || app is null || app.RootMap is null || app.Editor !is null) {
         return;
     }
-
     auto map = cast<CGameCtnChallenge>(app.RootMap);
     if (map is null || map.MapInfo is null || map.MapInfo.MapUid == "") {
         return;
     }
-
     float scale = Math::Clamp(setting_hud_scale, 0.5f, 2.0f);
 
     UI::SetNextWindowSize(
@@ -21,18 +14,15 @@ void Render() {
         Math::Clamp(int(60 * scale),50,120),
         UI::Cond::Always
     );
-
     UI::WindowFlags flags = UI::WindowFlags(
         UI::WindowFlags::NoTitleBar |
         UI::WindowFlags::NoResize |
         UI::WindowFlags::NoCollapse |
         UI::WindowFlags::NoScrollbar
     );
-
     if(!setting_background) {
        flags = UI::WindowFlags(flags | UI::WindowFlags::NoBackground);
     		}
-
     if (setting_lock_window_location) {
         flags = UI::WindowFlags(flags | UI::WindowFlags::NoMove);
     }
@@ -68,15 +58,14 @@ void Render() {
                     UI::Text("Lap");
                     UI::PopStyleColor();
                 }
-
                 UI::SetCursorPos(labelPos);
                 UI::PushStyleColor(UI::Col::Text, Setting_text_color);
                 UI::Text("Lap");
                 UI::PopStyleColor();
                 UI::SameLine();
             }
-
-            string lapText = "" + min(CurrentLap, TotalLaps) + " / " + TotalLaps;
+            // I learned this one in class yesterday. a < b ? a : b to prevent 5/4 laps
+            string lapText = "" + CurrentLap < TotalLaps ? CurrentLap : TotalLaps + " / " + TotalLaps;
             vec2 textPos = UI::GetCursorPos();
 
             if (setting_drop_shadow) {
@@ -85,7 +74,6 @@ void Render() {
                 UI::Text(lapText);
                 UI::PopStyleColor();
             }
-
             UI::SetCursorPos(textPos);
             UI::PushStyleColor(UI::Col::Text, Setting_text_color);
             UI::Text(lapText);
@@ -94,6 +82,5 @@ void Render() {
              }
         }
     }
-
     UI::End();
 }
