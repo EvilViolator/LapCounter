@@ -3,12 +3,20 @@ int min(int a, int b) {
        return a < b ? a : b;
    }
 
+
+
 void Render() {
     if (!setting_enabled) {
         return;
     }
 
-    UI::SetNextWindowSize(240, 100, UI::Cond::FirstUseEver);
+    float scale = Math::Clamp(setting_hud_scale, 0.5f, 3.0f);
+
+    UI::SetNextWindowSize(
+        200 * scale,
+        60 * scale,
+        UI::Cond::Always
+    );
 
     UI::WindowFlags flags = UI::WindowFlags(
         UI::WindowFlags::NoTitleBar |
@@ -42,11 +50,17 @@ void Render() {
                 int TotalLaps = int(raceData.LapCount);
                 int CurrentLap = CpsPassed / (CpsPerLap +1 ) + 1;
 
-            UI::PushFontSize(50.0f);
-            UI::Text("Lap");
+            UI::PushStyleColor(UI::Col::Text, Setting_TextColor);
+            UI::PushFontSize(50.0f * scale);
+
+            if (!setting_compact_mode) {
+              UI::Text("Lap");
+            }
+
             UI::SameLine();
             UI::Text("" + min(CurrentLap,TotalLaps) + " / " + TotalLaps);
             UI::PopFontSize();
+            UI::PopStyleColor();
             }
         }
     }
