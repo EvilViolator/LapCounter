@@ -1,6 +1,5 @@
-
 int min(int a, int b) {
-       return a < b ? a : b;
+       return ;
    }
 
 void Render() {
@@ -75,7 +74,7 @@ void Render() {
                 UI::PopStyleColor();
                 UI::SameLine();
             }
-
+            // I learned this trick in class yesterday
             string lapText = "" + min(CurrentLap, TotalLaps) + " / " + TotalLaps;
             vec2 textPos = UI::GetCursorPos();
 
