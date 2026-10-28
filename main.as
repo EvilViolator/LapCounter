@@ -3,18 +3,22 @@ int min(int a, int b) {
        return a < b ? a : b;
    }
 
-
-
 void Render() {
-    if (!setting_enabled) {
+    auto app = cast<CGameManiaPlanet>(GetApp());
+    if (!setting_enabled || app is null || app.RootMap is null || app.Editor !is null) {
         return;
     }
 
-    float scale = Math::Clamp(setting_hud_scale, 0.5f, 3.0f);
+    auto map = cast<CGameCtnChallenge>(app.RootMap);
+    if (map is null || map.MapInfo is null || map.MapInfo.MapUid == "") {
+        return;
+    }
+
+    float scale = Math::Clamp(setting_hud_scale, 0.5f, 2.0f);
 
     UI::SetNextWindowSize(
-        200 * scale,
-        60 * scale,
+        Math::Clamp(int(180 * scale),150,345),
+        Math::Clamp(int(60 * scale),50,120),
         UI::Cond::Always
     );
 
@@ -22,9 +26,12 @@ void Render() {
         UI::WindowFlags::NoTitleBar |
         UI::WindowFlags::NoResize |
         UI::WindowFlags::NoCollapse |
-        UI::WindowFlags::NoScrollbar |
-        UI::WindowFlags::NoBackground
+        UI::WindowFlags::NoScrollbar
     );
+
+    if(!setting_background) {
+       flags = UI::WindowFlags(flags | UI::WindowFlags::NoBackground);
+    		}
 
     if (setting_lock_window_location) {
         flags = UI::WindowFlags(flags | UI::WindowFlags::NoMove);
@@ -50,18 +57,41 @@ void Render() {
                 int TotalLaps = int(raceData.LapCount);
                 int CurrentLap = CpsPassed / (CpsPerLap +1 ) + 1;
 
-            UI::PushStyleColor(UI::Col::Text, Setting_TextColor);
             UI::PushFontSize(50.0f * scale);
 
             if (!setting_compact_mode) {
-              UI::Text("Lap");
+                vec2 labelPos = UI::GetCursorPos();
+
+                if (setting_drop_shadow) {
+                    UI::SetCursorPos(labelPos + vec2(2, 2));
+                    UI::PushStyleColor(UI::Col::Text, vec4(0, 0, 0, 1));
+                    UI::Text("Lap");
+                    UI::PopStyleColor();
+                }
+
+                UI::SetCursorPos(labelPos);
+                UI::PushStyleColor(UI::Col::Text, Setting_text_color);
+                UI::Text("Lap");
+                UI::PopStyleColor();
+                UI::SameLine();
             }
 
-            UI::SameLine();
-            UI::Text("" + min(CurrentLap,TotalLaps) + " / " + TotalLaps);
-            UI::PopFontSize();
-            UI::PopStyleColor();
+            string lapText = "" + min(CurrentLap, TotalLaps) + " / " + TotalLaps;
+            vec2 textPos = UI::GetCursorPos();
+
+            if (setting_drop_shadow) {
+                UI::SetCursorPos(textPos + vec2(2, 2));
+                UI::PushStyleColor(UI::Col::Text, vec4(0, 0, 0, 1));
+                UI::Text(lapText);
+                UI::PopStyleColor();
             }
+
+            UI::SetCursorPos(textPos);
+            UI::PushStyleColor(UI::Col::Text, Setting_text_color);
+            UI::Text(lapText);
+            UI::PopStyleColor();
+            UI::PopFontSize();
+             }
         }
     }
 
