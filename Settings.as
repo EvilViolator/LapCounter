@@ -7,6 +7,9 @@ bool setting_lock_window_location = false;
 [Setting name="Compact Mode" category="UI"]
 bool setting_compact_mode = false;
 
+[Setting name="Hide on Single Lap" category="UI"]
+bool setting_only_multilap = true;
+
 [Setting name="Hud Scale" category="UI" drag min=0.8 max=2.0]
 float setting_hud_scale = 1.0f;
 

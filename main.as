@@ -47,7 +47,9 @@
                 auto player = raceData.GetPlayer_V4(
                     MLFeed::LocalPlayersName
                 );
-
+                if (raceData.LapCount == 1 && setting_only_multilap) {
+                    //just do nothing.
+                } else {
                 if (player is null) {
                     UI::Text("Waiting for player...");
                 } else {
@@ -92,6 +94,6 @@
                  }
             }
         }
-
+       }
         UI::End();
     }
