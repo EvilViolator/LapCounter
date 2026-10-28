@@ -1,5 +1,5 @@
 int min(int a, int b) {
-       return ;
+       return a < b ? a : b ;
    }
 
 void Render() {
