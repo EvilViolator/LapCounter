@@ -74,7 +74,6 @@ void Render() {
                 UI::PopStyleColor();
                 UI::SameLine();
             }
-            // I learned this trick in class yesterday
             string lapText = "" + min(CurrentLap, TotalLaps) + " / " + TotalLaps;
             vec2 textPos = UI::GetCursorPos();
 
