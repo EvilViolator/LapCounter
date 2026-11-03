@@ -1,12 +1,10 @@
-const float BASE_WIDTH     = 155.0f;
-const float BASE_HEIGHT    = 60.0f;
 const float BASE_FONT_SIZE = 50.0f;
 const vec2  SHADOW_OFFSET  = vec2(2, 2);
 
 UI::WindowFlags GetWindowFlags() {
     UI::WindowFlags flags = UI::WindowFlags(
         UI::WindowFlags::NoTitleBar |
-        UI::WindowFlags::NoResize |
+        UI::WindowFlags::AlwaysAutoResize |
         UI::WindowFlags::NoCollapse |
         UI::WindowFlags::NoScrollbar
     );
@@ -67,11 +65,6 @@ void Render() {
     if (raceData !is null && raceData.LapCount == 1 && setting_only_multilap) return;
 
     float scale = Math::Clamp(setting_hud_scale, 0.5f, 2.0f);
-    UI::SetNextWindowSize(
-        int(Math::Clamp(BASE_WIDTH * scale, 130.0f, 300.0f)),
-        int(Math::Clamp(BASE_HEIGHT * scale, 50.0f, 120.0f)),
-        UI::Cond::Always
-    );
 
     if (UI::Begin("Lap HUD", GetWindowFlags())) {
         if (raceData is null) {
